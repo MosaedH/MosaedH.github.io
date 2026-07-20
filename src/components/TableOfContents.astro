@@ -1,0 +1,30 @@
+---
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+  headings: MarkdownHeading[];
+}
+
+// Depth 2–3 only: h1 is the title, deeper levels are noise in a sidebar.
+const items = Astro.props.headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+{
+  items.length >= 2 && (
+    <nav aria-label="جدول المحتويات" class="text-sm">
+      <h2 class="mb-2 font-semibold text-zinc-900 dark:text-zinc-100">في هذه التدوينة</h2>
+      <ul class="space-y-1.5 border-s-2 border-zinc-200 ps-3 dark:border-zinc-700">
+        {items.map((h) => (
+          <li class={h.depth === 3 ? 'ms-3' : ''}>
+            <a
+              href={`#${h.slug}`}
+              class="text-zinc-600 hover:text-accent dark:text-zinc-300 dark:hover:text-accent-light"
+            >
+              {h.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}

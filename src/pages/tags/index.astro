@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPublishedPosts } from '../../utils/posts';
+import { TAGS, type TagSlug } from '../../data/tags';
+
+const posts = await getPublishedPosts();
+const counts = new Map<TagSlug, number>();
+for (const post of posts) {
+  for (const tag of post.data.tags) {
+    counts.set(tag, (counts.get(tag) ?? 0) + 1);
+  }
+}
+const tags = [...counts.entries()].sort((a, b) => b[1] - a[1]);
+---
+
+<BaseLayout title="الوسوم" description="تصفح التدوينات حسب الموضوع">
+  <h1 class="mb-6 text-2xl font-bold">الوسوم</h1>
+  {tags.length === 0 && <p class="text-zinc-500 dark:text-zinc-400">لا توجد وسوم بعد.</p>}
+  <ul class="flex flex-wrap gap-3">
+    {
+      tags.map(([slug, count]) => (
+        <li>
+          <a
+            href={`/tags/${slug}/`}
+            class="inline-block rounded border border-zinc-300 px-3 py-1.5 hover:border-accent hover:text-accent dark:border-zinc-600"
+          >
+            {TAGS[slug]} <span class="text-sm text-zinc-500 dark:text-zinc-400">({count})</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</BaseLayout>

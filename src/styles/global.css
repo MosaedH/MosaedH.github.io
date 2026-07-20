@@ -1,0 +1,204 @@
+@import 'tailwindcss';
+
+/* Class-strategy dark mode (Tailwind v4): the inline script in BaseLayout sets
+   .dark on <html> before first paint. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* The single accent color. Change it here and nowhere else.
+     L must stay ≤ 0.47: WCAG AA needs 4.5:1 against white for small link text. */
+  --color-accent: oklch(0.47 0.1 230);
+  --color-accent-light: oklch(0.72 0.1 230);
+
+  /* Font stacks come from the Astro Fonts API (astro.config.mjs). */
+  --font-sans: var(--font-arabic);
+  --font-mono: var(--font-plex-mono);
+}
+
+/* In dark mode the accent must lighten to keep AA contrast on dark backgrounds.
+   Tailwind v4 utilities reference var(--color-accent), so this one override
+   retunes every text-accent/bg-accent usage — no per-element dark: variants. */
+.dark {
+  --color-accent: var(--color-accent-light);
+}
+
+@layer base {
+  html {
+    font-family: var(--font-arabic);
+  }
+
+  body {
+    /* Arabic needs generous leading; 1.8 minimum per the plan. */
+    line-height: 1.8;
+    @apply bg-white text-zinc-800 dark:bg-zinc-900 dark:text-zinc-100;
+  }
+
+  /* ---------- Code and bidi rules — load-bearing for RTL ---------- */
+
+  pre,
+  code,
+  kbd,
+  samp {
+    font-family: var(--font-mono);
+  }
+
+  /* Block code is always LTR, aligned to its own start (left). */
+  pre {
+    direction: ltr;
+    text-align: start;
+    overflow-x: auto;
+  }
+
+  /* Inline code inside RTL prose: isolate the bidi run instead of dir="ltr",
+     so surrounding Arabic punctuation does not reorder around it. */
+  :not(pre) > code,
+  kbd,
+  samp {
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  /* Visible focus states everywhere. */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+}
+
+/* ---------- Skip link ---------- */
+.skip-link {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  transform: translateY(-150%);
+  z-index: 50;
+  padding: 0.5rem 1rem;
+  background: var(--color-accent);
+  color: white;
+}
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* ---------- Article prose (hand-rolled; no typography plugin) ---------- */
+.prose {
+  max-width: 42rem; /* ≈ 65–75 chars of Arabic at 18px; tune by eye */
+  font-size: 1.125rem;
+}
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+  font-weight: 600;
+  line-height: 1.5;
+  margin-block: 1.75em 0.6em;
+  text-wrap: balance;
+}
+.prose h1 {
+  font-size: 1.9rem;
+  font-weight: 700;
+}
+.prose h2 {
+  font-size: 1.45rem;
+}
+.prose h3 {
+  font-size: 1.2rem;
+}
+.prose p {
+  margin-block: 1.1em; /* generous paragraph spacing for Arabic */
+}
+.prose a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.dark .prose a {
+  color: var(--color-accent-light);
+}
+.prose ul,
+.prose ol {
+  margin-block: 1.1em;
+  padding-inline-start: 1.6em; /* logical: indents from the right in RTL */
+}
+.prose li {
+  margin-block: 0.35em;
+}
+.prose blockquote {
+  margin-block: 1.4em;
+  padding-inline-start: 1em;
+  border-inline-start: 3px solid var(--color-accent);
+  color: var(--color-zinc-600);
+}
+.dark .prose blockquote {
+  color: var(--color-zinc-300);
+}
+
+/* IBM Plex Sans Arabic has no italic; synthesized oblique renders Arabic badly.
+   Emphasis becomes weight + accent color instead. */
+.prose em {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--color-accent);
+}
+.dark .prose em {
+  color: var(--color-accent-light);
+}
+
+.prose :not(pre) > code {
+  font-size: 0.85em;
+  background: var(--color-zinc-100);
+  padding: 0.15em 0.4em;
+  border-radius: 0.3em;
+}
+.dark .prose :not(pre) > code {
+  background: var(--color-zinc-800);
+}
+.prose pre {
+  margin-block: 1.4em;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+.prose pre code {
+  background: none;
+  padding: 0;
+  font-size: inherit;
+}
+
+/* ---------- Tables: RTL-correct, horizontal scroll on overflow (pure CSS,
+   no Markdown plugin — see NEW_PLAN §2) ---------- */
+.prose table {
+  display: block;
+  overflow-x: auto;
+  margin-block: 1.4em;
+  border-collapse: collapse;
+  font-size: 0.95em;
+}
+.prose th,
+.prose td {
+  border: 1px solid var(--color-zinc-300);
+  padding: 0.5em 0.9em;
+  text-align: start; /* logical: right-aligned in RTL, per column order */
+}
+.dark .prose th,
+.dark .prose td {
+  border-color: var(--color-zinc-700);
+}
+.prose th {
+  font-weight: 600;
+  background: var(--color-zinc-100);
+}
+.dark .prose th {
+  background: var(--color-zinc-800);
+}
+
+/* ---------- Shiki dual theme switch ---------- */
+.dark .astro-code,
+.dark .astro-code span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
+}

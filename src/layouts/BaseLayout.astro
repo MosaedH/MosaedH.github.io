@@ -1,0 +1,118 @@
+---
+import { Font } from 'astro:assets';
+import '../styles/global.css';
+import { SITE_TITLE, SITE_DESCRIPTION, AUTHOR } from '../consts';
+import { absoluteUrl } from '../utils/url';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogType?: 'website' | 'article';
+  jsonLd?: Record<string, unknown>;
+}
+
+const { title, description = SITE_DESCRIPTION, ogType = 'website', jsonLd } = Astro.props;
+const pageTitle = title ? `${title} | ${SITE_TITLE}` : SITE_TITLE;
+const canonical = absoluteUrl(Astro.url.pathname);
+const ogImage = absoluteUrl('/og-default.png');
+
+// Person JSON-LD site-wide; pages may pass a more specific object (BlogPosting).
+const structuredData = jsonLd ?? {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: AUTHOR,
+  url: absoluteUrl('/'),
+  jobTitle: 'Cybersecurity GRC Specialist',
+};
+---
+
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={AUTHOR} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={SITE_TITLE}
+      href={absoluteUrl('/rss.xml')}
+    />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:title" content={title ?? SITE_TITLE} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:site_name" content={SITE_TITLE} />
+    <meta property="og:locale" content="ar_AR" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title ?? SITE_TITLE} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+
+    <Font cssVariable="--font-arabic" preload />
+    <Font cssVariable="--font-plex-mono" />
+    <script is:inline>
+      // Theme init before first paint — prevents the flash of wrong theme.
+      (() => {
+        const stored = localStorage.getItem('theme');
+        const dark = stored
+          ? stored === 'dark'
+          : matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.classList.toggle('dark', dark);
+      })();
+    </script>
+  </head>
+  <body class="flex min-h-dvh flex-col">
+    <a href="#main" class="skip-link">تخطّي إلى المحتوى</a>
+
+    <header class="border-b border-zinc-200 dark:border-zinc-700">
+      <nav
+        class="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-4"
+        aria-label="التنقل الرئيسي"
+      >
+        <a href="/" class="text-lg font-bold no-underline">{SITE_TITLE}</a>
+        <a href="/blog/" class="text-zinc-600 hover:text-accent dark:text-zinc-300">المدونة</a>
+        <a href="/tags/" class="text-zinc-600 hover:text-accent dark:text-zinc-300">الوسوم</a>
+        <a href="/about/" class="text-zinc-600 hover:text-accent dark:text-zinc-300">عن الموقع</a>
+        <button
+          id="theme-toggle"
+          type="button"
+          class="ms-auto rounded border border-zinc-300 px-2 py-1 text-sm dark:border-zinc-600"
+          aria-label="تبديل الوضع الليلي"
+        >
+          <span class="dark:hidden" aria-hidden="true">🌙</span>
+          <span class="hidden dark:inline" aria-hidden="true">☀️</span>
+        </button>
+      </nav>
+    </header>
+
+    <main id="main" class="mx-auto w-full max-w-5xl flex-1 px-4 py-8">
+      <slot />
+    </main>
+
+    <footer
+      class="border-t border-zinc-200 py-6 text-center text-sm text-zinc-500 dark:border-zinc-700 dark:text-zinc-400"
+    >
+      <div class="mx-auto max-w-5xl px-4">
+        <p>{SITE_TITLE} — <a href="/rss.xml" class="hover:text-accent">RSS</a></p>
+      </div>
+    </footer>
+
+    <script>
+      const toggle = document.getElementById('theme-toggle');
+      toggle?.addEventListener('click', () => {
+        const dark = document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', dark ? 'dark' : 'light');
+      });
+    </script>
+  </body>
+</html>

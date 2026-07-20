@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="الصفحة غير موجودة">
+  <div class="py-16 text-center">
+    <p class="mb-2 text-6xl font-bold text-accent">404</p>
+    <h1 class="mb-4 text-2xl font-bold">الصفحة غير موجودة</h1>
+    <p class="mb-8 text-zinc-600 dark:text-zinc-300">
+      ربما نُقلت الصفحة أو كُتب الرابط بشكل غير صحيح.
+    </p>
+    {/* Root-absolute links only: GitHub Pages serves this page at arbitrary deep paths. */}
+    <a href="/" class="text-accent underline underline-offset-4">العودة إلى الصفحة الرئيسية</a>
+  </div>
+</BaseLayout>

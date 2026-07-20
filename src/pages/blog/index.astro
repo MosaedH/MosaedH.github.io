@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPublishedPosts } from '../../utils/posts';
+
+const posts = await getPublishedPosts();
+const dateFormatter = new Intl.DateTimeFormat('ar', { dateStyle: 'long', numberingSystem: 'latn' });
+---
+
+<BaseLayout title="المدونة">
+  <h1 class="mb-6 text-2xl font-bold">جميع التدوينات</h1>
+  <ul class="space-y-6">
+    {
+      posts.map((post) => (
+        <li>
+          <a href={`/blog/${post.id}/`} class="text-lg font-semibold text-accent hover:underline">
+            {post.data.title}
+            {post.data.draft && (
+              <span class="ms-2 text-sm font-normal text-amber-700 dark:text-amber-300">
+                (مسودة)
+              </span>
+            )}
+          </a>
+          <p class="text-sm text-zinc-500 dark:text-zinc-400">
+            {dateFormatter.format(post.data.pubDate)}
+          </p>
+          <p class="text-zinc-700 dark:text-zinc-300">{post.data.description}</p>
+        </li>
+      ))
+    }
+  </ul>
+</BaseLayout>

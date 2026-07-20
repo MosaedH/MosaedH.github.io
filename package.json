@@ -1,0 +1,36 @@
+{
+  "name": "mosaedh-blog",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "verify:ids": "node scripts/verify-heading-ids.mjs",
+    "verify:dist": "node scripts/verify-dist-urls.mjs",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "verify:rtl": "node scripts/verify-logical-props.mjs"
+  },
+  "dependencies": {
+    "@astrojs/markdown-satteri": "0.3.4",
+    "@astrojs/mdx": "^7.0.3",
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.3",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.1.1",
+    "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "eslint": "^10.7.0",
+    "eslint-plugin-astro": "^1.7.0",
+    "prettier": "^3.9.5",
+    "prettier-plugin-astro": "^0.14.1",
+    "typescript-eslint": "^8.64.0"
+  }
+}
