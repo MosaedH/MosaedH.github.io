@@ -1,7 +1,13 @@
 ---
 import { Font } from 'astro:assets';
 import '../styles/global.css';
-import { SITE_TITLE, SITE_DESCRIPTION, AUTHOR, ANALYTICS } from '../consts';
+import {
+  SITE_TITLE,
+  SITE_DESCRIPTION,
+  AUTHOR,
+  ANALYTICS,
+  GOOGLE_SITE_VERIFICATION,
+} from '../consts';
 import { absoluteUrl } from '../utils/url';
 
 interface Props {
@@ -37,6 +43,7 @@ const analyticsEnabled = import.meta.env.PROD;
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <meta name="author" content={AUTHOR} />
+    <meta name="google-site-verification" content={GOOGLE_SITE_VERIFICATION} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link

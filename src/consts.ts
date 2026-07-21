@@ -7,6 +7,11 @@ export const AUTHOR = 'Mosaed H';
 // Arabic reads slower than English at the same word count.
 export const READING_WPM = 140;
 
+// Google Search Console ownership token. Rendered as a meta tag in <head> on
+// every page; Google checks the homepage. Safe to be public — it only proves
+// ownership, it grants no access.
+export const GOOGLE_SITE_VERIFICATION = '1pl2NCWifQj9xTB-NIEYzKabf082VnkMmCGnZL94_H4';
+
 // Analytics: GoatCounter, self-hosted-free and cookieless.
 export const ANALYTICS = {
   // Pageview collection endpoint (from the GoatCounter dashboard).
