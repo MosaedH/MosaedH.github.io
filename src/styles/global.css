@@ -144,6 +144,49 @@
   color: var(--color-accent-light);
 }
 
+/* Images: without this a 1200px image overflows the 42rem prose column. */
+.prose img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-block: 1.4em;
+  border-radius: 0.5rem;
+}
+
+/* GFM task lists: drop the bullet so the checkbox is the only marker. */
+.prose .contains-task-list {
+  list-style: none;
+  padding-inline-start: 0;
+}
+.prose .contains-task-list input[type='checkbox'] {
+  margin-inline-end: 0.5em;
+}
+
+.prose hr {
+  margin-block: 2.5em;
+  border: 0;
+  border-top: 1px solid var(--color-zinc-300);
+}
+.dark .prose hr {
+  border-color: var(--color-zinc-700);
+}
+
+/* GFM footnotes: separated and de-emphasised at the end of the article. */
+.prose .footnotes {
+  margin-block-start: 3em;
+  padding-block-start: 1em;
+  border-top: 1px solid var(--color-zinc-300);
+  font-size: 0.9em;
+  color: var(--color-zinc-600);
+}
+.dark .prose .footnotes {
+  border-color: var(--color-zinc-700);
+  color: var(--color-zinc-300);
+}
+.prose .data-footnote-backref {
+  text-decoration: none;
+}
+
 .prose :not(pre) > code {
   font-size: 0.85em;
   background: var(--color-zinc-100);
