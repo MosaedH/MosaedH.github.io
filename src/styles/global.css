@@ -115,10 +115,27 @@
 .dark .prose a {
   color: var(--color-accent-light);
 }
+/* Tailwind's reset strips list markers, so restore them explicitly — without
+   this every bullet and number in every post silently disappears. */
 .prose ul,
 .prose ol {
   margin-block: 1.1em;
   padding-inline-start: 1.6em; /* logical: indents from the right in RTL */
+}
+.prose ul {
+  list-style-type: disc;
+}
+.prose ol {
+  list-style-type: decimal;
+}
+.prose ul ul {
+  list-style-type: circle;
+}
+.prose ul ul ul {
+  list-style-type: square;
+}
+.prose li::marker {
+  color: var(--color-zinc-500);
 }
 .prose li {
   margin-block: 0.35em;
@@ -142,6 +159,18 @@
 }
 .dark .prose em {
   color: var(--color-accent-light);
+}
+
+/* <mark>: the browser default is a harsh yellow that fails contrast in dark mode. */
+.prose mark {
+  background: color-mix(in oklch, var(--color-accent) 18%, transparent);
+  color: inherit;
+  padding: 0.1em 0.35em;
+  border-radius: 0.25em;
+  font-weight: 600;
+}
+.dark .prose mark {
+  background: color-mix(in oklch, var(--color-accent-light) 22%, transparent);
 }
 
 /* Images: without this a 1200px image overflows the 42rem prose column. */
