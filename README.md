@@ -76,6 +76,23 @@ Push to `main` → [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml
 - No `.nojekyll` file is needed: Actions-based Pages deployments never run Jekyll. Don't add one.
 - Fonts are downloaded from Fontsource **at build time** and self-hosted in the output — the deployed site makes no CDN requests.
 
+## Analytics (GoatCounter)
+
+Cookieless pageview collection via [GoatCounter](https://mos.goatcounter.com), configured in the `ANALYTICS` block of [`src/consts.ts`](src/consts.ts).
+
+- The collection script loads `async` and unbundled from `gc.zgo.at`, so it stays off the critical rendering path (verified: Lighthouse performance unchanged at 98).
+- **It only loads in production builds.** `npm run dev` and local previews never hit GoatCounter, so local browsing can't pollute real stats.
+- No cookies, no consent banner needed.
+
+**Two-phase rollout.** `showViewCounts` is currently **`false`**: data is collected, but visitors see no numbers. While it's false, [`ViewCount.astro`](src/components/ViewCount.astro) renders nothing at all — no markup, no JS, no request.
+
+Phase 2, when the archive has enough traffic to be worth showing:
+
+1. In the GoatCounter dashboard, enable **"Allow public access to counts"** (without this the counter API returns 403 and counts silently never appear).
+2. Set `showViewCounts: true` in [`src/consts.ts`](src/consts.ts).
+
+Per-post counts are then fetched client-side from `https://mos.goatcounter.com/counter/<path>.json` and rendered in the post meta line. Failures are silent by design — a dead analytics endpoint must never surface an error mid-article. This path is untested until step 1 is done, since the API returns 403 while counts are private.
+
 ## Switching to a custom domain (later)
 
 1. In [`astro.config.mjs`](astro.config.mjs), change `site` to `https://yourdomain.com` — the only code edit; every absolute URL (canonical, OG, RSS, sitemap, robots) flows through it.

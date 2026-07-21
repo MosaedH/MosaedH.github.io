@@ -2,6 +2,7 @@
 import { render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
+import ViewCount from '../../components/ViewCount.astro';
 import { getPublishedPosts } from '../../utils/posts';
 import { getRelatedPosts } from '../../utils/related';
 import { readingTimeMinutes } from '../../utils/reading-time';
@@ -62,6 +63,7 @@ const jsonLd = {
             >{dateFormatter.format(post.data.pubDate)}</time
           > — وقت القراءة <span>{minutes}</span>
           {minutes <= 10 && minutes >= 3 ? 'دقائق' : 'دقيقة'} تقريبًا
+          <ViewCount />
         </p>
         {
           post.data.updatedDate && (

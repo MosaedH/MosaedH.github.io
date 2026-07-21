@@ -1,0 +1,42 @@
+---
+import { ANALYTICS } from '../consts';
+
+// Phase 2 of the analytics rollout. While ANALYTICS.showViewCounts is false this
+// renders nothing at all — no markup, no JS, no network request — so collection
+// runs without exposing numbers to visitors. Flipping that one flag to true is
+// the whole of phase 2.
+//
+// Reads from GoatCounter's public counter API, which requires
+// "Allow public access to counts" to be enabled in the GoatCounter dashboard.
+// Client-side because counts are live data a static build cannot hold. Failure
+// is silent by design: a dead analytics endpoint must never produce a visible
+// error in the middle of an article.
+const script = `
+(async () => {
+  const el = document.querySelector('[data-view-count]');
+  if (!el) return;
+  try {
+    const res = await fetch(el.dataset.countsOrigin + '/counter/' + encodeURIComponent(location.pathname) + '.json');
+    if (!res.ok) return;
+    const data = await res.json();
+    if (!data.count) return;
+    el.querySelector('[data-view-count-value]').textContent =
+      new Intl.NumberFormat('ar', { numberingSystem: 'latn' }).format(Number(data.count));
+    el.hidden = false;
+  } catch {
+    /* silent by design */
+  }
+})();
+`;
+---
+
+{
+  ANALYTICS.showViewCounts && (
+    <>
+      <span data-view-count data-counts-origin={ANALYTICS.countsOrigin} hidden>
+        — <span data-view-count-value /> مشاهدة
+      </span>
+      <script is:inline set:html={script} />
+    </>
+  )
+}

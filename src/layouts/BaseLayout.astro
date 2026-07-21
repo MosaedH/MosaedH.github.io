@@ -1,7 +1,7 @@
 ---
 import { Font } from 'astro:assets';
 import '../styles/global.css';
-import { SITE_TITLE, SITE_DESCRIPTION, AUTHOR } from '../consts';
+import { SITE_TITLE, SITE_DESCRIPTION, AUTHOR, ANALYTICS } from '../consts';
 import { absoluteUrl } from '../utils/url';
 
 interface Props {
@@ -24,6 +24,9 @@ const structuredData = jsonLd ?? {
   url: absoluteUrl('/'),
   jobTitle: 'Cybersecurity GRC Specialist',
 };
+
+// Production only: `astro dev` and local previews must not pollute real stats.
+const analyticsEnabled = import.meta.env.PROD;
 ---
 
 <!doctype html>
@@ -70,6 +73,21 @@ const structuredData = jsonLd ?? {
         document.documentElement.classList.toggle('dark', dark);
       })();
     </script>
+
+    {
+      /* GoatCounter: cookieless pageview collection. `async` + `is:inline` keeps it
+         off the critical path and unbundled, so it costs nothing at first paint.
+         Explicit https (not the snippet's protocol-relative //) — the site is
+         https-only and protocol-relative URLs are legacy. */
+      analyticsEnabled && (
+        <script
+          is:inline
+          async
+          src="https://gc.zgo.at/count.js"
+          data-goatcounter={ANALYTICS.endpoint}
+        />
+      )
+    }
   </head>
   <body class="flex min-h-dvh flex-col">
     <a href="#main" class="skip-link">تخطّي إلى المحتوى</a>
