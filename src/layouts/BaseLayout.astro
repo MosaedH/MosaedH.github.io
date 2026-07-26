@@ -135,8 +135,13 @@ const analyticsEnabled = import.meta.env.PROD;
     <script>
       const toggle = document.getElementById('theme-toggle');
       toggle?.addEventListener('click', () => {
-        const dark = document.documentElement.classList.toggle('dark');
+        const root = document.documentElement;
+        // Enable smooth color transitions only for the duration of the switch,
+        // so the pre-paint theme init (first load) never animates.
+        root.classList.add('theme-anim');
+        const dark = root.classList.toggle('dark');
         localStorage.setItem('theme', dark ? 'dark' : 'light');
+        window.setTimeout(() => root.classList.remove('theme-anim'), 400);
       });
     </script>
   </body>

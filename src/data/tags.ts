@@ -8,6 +8,7 @@ export const TAGS = {
   'iso-27001': 'ISO 27001',
   'rendering-tests': 'اختبارات العرض',
   'test-test': 'اختبارات الاختبارات',
+  'exam-review': 'مراجعة الامتحان',
 } as const;
 
 export type TagSlug = keyof typeof TAGS;
