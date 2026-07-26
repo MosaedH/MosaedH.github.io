@@ -1,7 +1,7 @@
 ---
 title: تجربتي مع اختبار ISO/IEC 27001 Lead implementer
 description: تجربتي مع اختبار ISO/IEC 27001 Lead Implementer بجميع تفاصيلها من مرحلة الدراسة إلى اصدار الشهادة
-pubDate: 2026-07-26 2026-07-26
+pubDate: 2026-07-26
 tags:
   - iso-27001
   - exam-review
