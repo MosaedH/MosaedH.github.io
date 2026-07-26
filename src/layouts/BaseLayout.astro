@@ -12,23 +12,40 @@ import { absoluteUrl } from '../utils/url';
 
 interface Props {
   title?: string;
+  // Verbatim <title> with no "| site" suffix — used by the homepage.
+  fullTitle?: string;
   description?: string;
   ogType?: 'website' | 'article';
   jsonLd?: Record<string, unknown>;
 }
 
-const { title, description = SITE_DESCRIPTION, ogType = 'website', jsonLd } = Astro.props;
-const pageTitle = title ? `${title} | ${SITE_TITLE}` : SITE_TITLE;
+const { title, fullTitle, description = SITE_DESCRIPTION, ogType = 'website', jsonLd } = Astro.props;
+const pageTitle = fullTitle ?? (title ? `${title} | ${SITE_TITLE}` : SITE_TITLE);
+const ogTitle = fullTitle ?? title ?? SITE_TITLE;
 const canonical = absoluteUrl(Astro.url.pathname);
 const ogImage = absoluteUrl('/og-default.png');
 
-// Person JSON-LD site-wide; pages may pass a more specific object (BlogPosting).
+// Site-wide JSON-LD; pages may pass a more specific object (e.g. BlogPosting).
+// The WebSite node carries `name`, which is what Google uses for the site-name
+// line in results — without it, *.github.io hosting makes it fall back to "GitHub".
 const structuredData = jsonLd ?? {
   '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: AUTHOR,
-  url: absoluteUrl('/'),
-  jobTitle: 'Cybersecurity GRC Specialist',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      name: SITE_TITLE,
+      alternateName: 'Mosaed Blog',
+      url: absoluteUrl('/'),
+      description: SITE_DESCRIPTION,
+      inLanguage: 'ar',
+    },
+    {
+      '@type': 'Person',
+      name: AUTHOR,
+      url: absoluteUrl('/'),
+      jobTitle: 'Cybersecurity GRC Specialist',
+    },
+  ],
 };
 
 // Production only: `astro dev` and local previews must not pollute real stats.
@@ -54,7 +71,7 @@ const analyticsEnabled = import.meta.env.PROD;
     />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
-    <meta property="og:title" content={title ?? SITE_TITLE} />
+    <meta property="og:title" content={ogTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content={ogType} />
     <meta property="og:url" content={canonical} />
@@ -62,7 +79,7 @@ const analyticsEnabled = import.meta.env.PROD;
     <meta property="og:site_name" content={SITE_TITLE} />
     <meta property="og:locale" content="ar_AR" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title ?? SITE_TITLE} />
+    <meta name="twitter:title" content={ogTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 

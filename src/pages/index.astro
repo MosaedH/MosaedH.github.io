@@ -7,7 +7,7 @@ const latest = (await getPublishedPosts()).slice(0, 5);
 const dateFormatter = new Intl.DateTimeFormat('ar', { dateStyle: 'long', numberingSystem: 'latn' });
 ---
 
-<BaseLayout>
+<BaseLayout fullTitle="مدونة مساعد — حوكمة الأمن السيبراني والمخاطر والالتزام (GRC)">
   <section class="mb-10">
     <h1 class="mb-3 text-2xl font-bold">أهلًا بك</h1>
     <p class="max-w-prose text-zinc-700 dark:text-zinc-300">{SITE_DESCRIPTION}</p>

@@ -1,7 +1,7 @@
 // Site-wide metadata: the single place to change titles, author, and constants.
 export const SITE_TITLE = 'مدونة مساعد';
 export const SITE_DESCRIPTION =
-  'مدونة تقنية عن حوكمة الأمن السيبراني والمخاطر والالتزام (GRC) في الخليج';
+  'مدونة أنشر فيها مقالاتي وكتاباتي وتجاربي في مجال الأمن السيبراني، وأشارك رحلتي في حوكمة المخاطر والالتزام (GRC)';
 export const AUTHOR = 'Mosaed H';
 
 // Arabic reads slower than English at the same word count.
