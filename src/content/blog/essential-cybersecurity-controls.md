@@ -4,7 +4,7 @@ description: شرح الضوابط الاساسية للأمن السيبران�
 pubDate: 2026-07-21
 tags:
   - nca-ecc
-draft: false
+draft: true
 updatedDate: 2026-07-27
 slug: essential-cybersecurity-controls
 ---
