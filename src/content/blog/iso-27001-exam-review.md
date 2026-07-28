@@ -2,6 +2,8 @@
 title: تجربتي مع اختبار ISO/IEC 27001 Lead implementer
 description: تجربتي مع اختبار ISO/IEC 27001 Lead Implementer بجميع تفاصيلها من مرحلة الدراسة إلى اصدار الشهادة
 pubDate: 2026-07-26
+image: /images/exam-review/تجربتي مع اختبار ISOIEC 27001 Lead implementer.png
+imageAlt: استعد لاختبار ISO 27001
 tags:
   - iso-27001
   - exam-review
@@ -16,7 +18,7 @@ slug: iso-27001-exam-review
 # مقدمة 
 > الهدف: توضيح الصورة العامة.
 
-
+![[iso-image.png]]
 ## ما هي الـ ISO؟
 هي المنظمة العالمية للمعايير International Organization for Standardization وتختصر بالـ "ISO" هذه المنظمة احد اهم اهدافها هي بناء معايير وفق افضل ممارسات الخبراء في مجال معين وفي سياقنا هذا مجال "أمن المعلومات".
 

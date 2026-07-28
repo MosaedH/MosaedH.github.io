@@ -33,6 +33,7 @@ const jsonLd = {
   author: { '@type': 'Person', name: AUTHOR },
   inLanguage: 'ar',
   mainEntityOfPage: absoluteUrl(`/blog/${post.id}/`),
+  ...(post.data.image && { image: absoluteUrl(post.data.image) }),
 };
 ---
 
@@ -40,6 +41,7 @@ const jsonLd = {
   title={post.data.title}
   description={post.data.description}
   ogType="article"
+  image={post.data.image}
   jsonLd={jsonLd}
 >
   <!-- Reading progress bar: logical inset, grows from the reading start (right in RTL). -->
@@ -90,6 +92,17 @@ const jsonLd = {
           }
         </ul>
       </header>
+
+      {
+        post.data.image && (
+          <img
+            src={post.data.image}
+            alt={post.data.imageAlt ?? ''}
+            class="my-6 w-full rounded-lg"
+            loading="eager"
+          />
+        )
+      }
 
       <!-- Mobile TOC: in-flow before the content. -->
       <div class="my-6 lg:hidden">

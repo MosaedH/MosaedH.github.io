@@ -11,6 +11,11 @@ const blog = defineCollection({
     description: z.string(),
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
+    // Cover/thumbnail. A site-absolute path to an image in public/ (e.g.
+    // /images/<slug>/cover.jpg), matching how images are referenced in post
+    // bodies. Used as the post hero, the list thumbnail, and the OG image.
+    image: z.string().startsWith('/').optional(),
+    imageAlt: z.string().optional(),
     tags: z
       .array(
         z.string().refine(isTag, (value) => ({

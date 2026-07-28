@@ -11,19 +11,31 @@ const dateFormatter = new Intl.DateTimeFormat('ar', { dateStyle: 'long', numberi
   <ul class="space-y-6">
     {
       posts.map((post) => (
-        <li>
-          <a href={`/blog/${post.id}/`} class="text-lg font-semibold text-accent hover:underline">
-            {post.data.title}
-            {post.data.draft && (
-              <span class="ms-2 text-sm font-normal text-amber-700 dark:text-amber-300">
-                (مسودة)
-              </span>
-            )}
-          </a>
-          <p class="text-sm text-zinc-500 dark:text-zinc-400">
-            {dateFormatter.format(post.data.pubDate)}
-          </p>
-          <p class="text-zinc-700 dark:text-zinc-300">{post.data.description}</p>
+        <li class="flex flex-col gap-4 sm:flex-row">
+          {post.data.image && (
+            <a href={`/blog/${post.id}/`} class="shrink-0">
+              <img
+                src={post.data.image}
+                alt={post.data.imageAlt ?? ''}
+                class="aspect-video w-full rounded-lg object-cover sm:w-48"
+                loading="lazy"
+              />
+            </a>
+          )}
+          <div class="min-w-0">
+            <a href={`/blog/${post.id}/`} class="text-lg font-semibold text-accent hover:underline">
+              {post.data.title}
+              {post.data.draft && (
+                <span class="ms-2 text-sm font-normal text-amber-700 dark:text-amber-300">
+                  (مسودة)
+                </span>
+              )}
+            </a>
+            <p class="text-sm text-zinc-500 dark:text-zinc-400">
+              {dateFormatter.format(post.data.pubDate)}
+            </p>
+            <p class="text-zinc-700 dark:text-zinc-300">{post.data.description}</p>
+          </div>
         </li>
       ))
     }

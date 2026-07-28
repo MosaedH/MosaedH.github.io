@@ -16,14 +16,24 @@ interface Props {
   fullTitle?: string;
   description?: string;
   ogType?: 'website' | 'article';
+  // Site-absolute path (e.g. /images/foo.jpg) to use as the OG/Twitter image.
+  // Falls back to the site-wide default when omitted.
+  image?: string;
   jsonLd?: Record<string, unknown>;
 }
 
-const { title, fullTitle, description = SITE_DESCRIPTION, ogType = 'website', jsonLd } = Astro.props;
+const {
+  title,
+  fullTitle,
+  description = SITE_DESCRIPTION,
+  ogType = 'website',
+  image,
+  jsonLd,
+} = Astro.props;
 const pageTitle = fullTitle ?? (title ? `${title} | ${SITE_TITLE}` : SITE_TITLE);
 const ogTitle = fullTitle ?? title ?? SITE_TITLE;
 const canonical = absoluteUrl(Astro.url.pathname);
-const ogImage = absoluteUrl('/og-default.png');
+const ogImage = absoluteUrl(image ?? '/og-default.png');
 
 // Site-wide JSON-LD; pages may pass a more specific object (e.g. BlogPosting).
 // The WebSite node carries `name`, which is what Google uses for the site-name
