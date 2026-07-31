@@ -9,6 +9,7 @@ export const TAGS = {
   'rendering-tests': 'اختبارات العرض',
   'test-test': 'اختبارات الاختبارات',
   'exam-review': 'مراجعة الامتحان',
+  'tprm': 'مخاطر الاطراف الخارجية',
 } as const;
 
 export type TagSlug = keyof typeof TAGS;
