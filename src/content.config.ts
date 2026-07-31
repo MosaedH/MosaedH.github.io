@@ -16,6 +16,9 @@ const blog = defineCollection({
     // bodies. Used as the post hero, the list thumbnail, and the OG image.
     image: z.string().startsWith('/').optional(),
     imageAlt: z.string().optional(),
+    // Hide the hero image at the top of the post body while still using `image`
+    // as the list thumbnail and social/OG card.
+    hideHeroImage: z.boolean().default(false),
     tags: z
       .array(
         z.string().refine(isTag, (value) => ({

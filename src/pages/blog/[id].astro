@@ -94,7 +94,7 @@ const jsonLd = {
       </header>
 
       {
-        post.data.image && (
+        post.data.image && !post.data.hideHeroImage && (
           <img
             src={post.data.image}
             alt={post.data.imageAlt ?? ''}
